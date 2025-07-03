@@ -134,7 +134,7 @@ export default function StoreMap({
               y={aisle.position.y * CELL_SIZE + (aisle.height * CELL_SIZE) / 2}
               textAnchor="middle"
               dominantBaseline="middle"
-              className="text-xs font-semibold fill-white"
+              className="text-xs font-semibold fill-black"
               style={{ userSelect: "none" }}
             >
               {aisle.name}
