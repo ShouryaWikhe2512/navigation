@@ -1,6 +1,6 @@
-import React, { useEffect, useRef } from 'react';
-import { Position, PathStep, Aisle } from '../types/store';
-import { entrance, checkout } from '../data/storeData';
+import React, { useEffect, useRef } from "react";
+import { Position, PathStep, Aisle } from "../types/store";
+import { entrance, checkout } from "../data/storeData";
 
 interface StoreMapProps {
   aisles: Aisle[];
@@ -11,31 +11,33 @@ interface StoreMapProps {
 
 const CELL_SIZE = 24;
 
-export default function StoreMap({ 
-  aisles, 
-  highlightedAisles, 
-  path, 
-  onPathComplete 
+export default function StoreMap({
+  aisles,
+  highlightedAisles,
+  path,
+  onPathComplete,
 }: StoreMapProps) {
   const svgRef = useRef<SVGSVGElement>(null);
 
   useEffect(() => {
     if (path.length > 0) {
       // Animate path drawing
-      const pathElements = svgRef.current?.querySelectorAll('.path-segment');
+      const pathElements = svgRef.current?.querySelectorAll(".path-segment");
       if (pathElements) {
         pathElements.forEach((element, index) => {
           const pathElement = element as SVGElement;
-          pathElement.style.strokeDasharray = '5,5';
-          pathElement.style.strokeDashoffset = '10';
-          pathElement.style.animation = `drawPath 0.5s ease-in-out ${index * 0.1}s forwards`;
+          pathElement.style.strokeDasharray = "5,5";
+          pathElement.style.strokeDashoffset = "10";
+          pathElement.style.animation = `drawPath 0.5s ease-in-out ${
+            index * 0.1
+          }s forwards`;
         });
       }
-      
+
       // Complete animation after all segments are drawn
       setTimeout(() => {
         onPathComplete();
-      }, (path.length * 100) + 500);
+      }, path.length * 100 + 500);
     }
   }, [path, onPathComplete]);
 
@@ -46,7 +48,7 @@ export default function StoreMap({
     for (let i = 0; i < path.length - 1; i++) {
       const current = path[i];
       const next = path[i + 1];
-      
+
       pathSegments.push(
         <line
           key={`path-${i}`}
@@ -75,7 +77,7 @@ export default function StoreMap({
         fill="#04b7cf"
         className="animate-pulse"
         style={{
-          animationDelay: `${index * 0.1}s`
+          animationDelay: `${index * 0.1}s`,
         }}
       />
     ));
@@ -91,7 +93,12 @@ export default function StoreMap({
       >
         {/* Grid lines */}
         <defs>
-          <pattern id="grid" width={CELL_SIZE} height={CELL_SIZE} patternUnits="userSpaceOnUse">
+          <pattern
+            id="grid"
+            width={CELL_SIZE}
+            height={CELL_SIZE}
+            patternUnits="userSpaceOnUse"
+          >
             <path
               d={`M ${CELL_SIZE} 0 L 0 0 0 ${CELL_SIZE}`}
               fill="none"
@@ -103,19 +110,23 @@ export default function StoreMap({
         <rect width="100%" height="100%" fill="url(#grid)" />
 
         {/* Aisles */}
-        {aisles.map(aisle => (
+        {aisles.map((aisle) => (
           <g key={aisle.id}>
             <rect
               x={aisle.position.x * CELL_SIZE}
               y={aisle.position.y * CELL_SIZE}
               width={aisle.width * CELL_SIZE}
               height={aisle.height * CELL_SIZE}
-              fill={highlightedAisles.includes(aisle.id) ? aisle.color : '#e5e7eb'}
-              stroke={highlightedAisles.includes(aisle.id) ? '#374151' : '#9ca3af'}
+              fill={
+                highlightedAisles.includes(aisle.id) ? aisle.color : "#e5e7eb"
+              }
+              stroke={
+                highlightedAisles.includes(aisle.id) ? "#374151" : "#9ca3af"
+              }
               strokeWidth="2"
               rx="4"
               className={`transition-all duration-300 ${
-                highlightedAisles.includes(aisle.id) ? 'shadow-lg' : ''
+                highlightedAisles.includes(aisle.id) ? "shadow-lg" : ""
               }`}
             />
             <text
@@ -124,7 +135,7 @@ export default function StoreMap({
               textAnchor="middle"
               dominantBaseline="middle"
               className="text-xs font-semibold fill-white"
-              style={{ userSelect: 'none' }}
+              style={{ userSelect: "none" }}
             >
               {aisle.name}
             </text>
@@ -149,7 +160,7 @@ export default function StoreMap({
             textAnchor="middle"
             dominantBaseline="middle"
             className="text-xs font-bold fill-white"
-            style={{ userSelect: 'none' }}
+            style={{ userSelect: "none" }}
           >
             IN
           </text>
@@ -173,7 +184,7 @@ export default function StoreMap({
             textAnchor="middle"
             dominantBaseline="middle"
             className="text-xs font-bold fill-white"
-            style={{ userSelect: 'none' }}
+            style={{ userSelect: "none" }}
           >
             OUT
           </text>
@@ -185,11 +196,11 @@ export default function StoreMap({
       </svg>
 
       {/* Pulse animation background */}
-      <div className="absolute inset-0 pointer-events-none">
+      {/* <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-8 left-8 w-16 h-16 bg-[#51c995] rounded-full opacity-20 animate-pulse"></div>
         <div className="absolute bottom-12 right-12 w-12 h-12 bg-[#04b7cf] rounded-full opacity-20 animate-pulse" style={{ animationDelay: '1s' }}></div>
         <div className="absolute top-1/2 left-1/4 w-8 h-8 bg-[#04cf84] rounded-full opacity-20 animate-pulse" style={{ animationDelay: '2s' }}></div>
-      </div>
+      </div> */}
     </div>
   );
 }

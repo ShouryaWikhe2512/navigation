@@ -110,8 +110,8 @@ export default function ProductSelector({
       )}
 
       {/* Product List */}
-      <div className="flex-1 overflow-y-auto p-4">
-        <div className="space-y-2">
+      <div className="flex-1 p-4">
+        <div className="space-y-2 max-h-72 overflow-y-auto pr-1 custom-scrollbar">
           {filteredProducts.map((product) => (
             <button
               key={product.id}
